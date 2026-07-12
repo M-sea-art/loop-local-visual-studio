@@ -95,11 +95,12 @@ function New-LLVSPublicFeedbackPayload {
         [Parameter(Mandatory = $true)][string]$ErrorCode
     )
 
+    $commandName = ($Command.Trim() -split '\s+')[0]
     return [ordered]@{
         schemaVersion = 1
         feedbackId = $FeedbackId
         projectRef = Get-LLVSProjectReference -SourceProject $SourceProject
-        command = ConvertTo-LLVSSafeIdentifier -Value $Command -Fallback 'unknown-command' -MaximumLength 48
+        command = ConvertTo-LLVSSafeIdentifier -Value (ConvertTo-LLVSRedactedText -Value $commandName) -Fallback 'unknown-command' -MaximumLength 48
         errorCode = ConvertTo-LLVSSafeIdentifier -Value $ErrorCode -Fallback 'UNSPECIFIED_FAILURE' -MaximumLength 64 -Uppercase
         platform = Get-LLVSPlatformName
         powershellVersion = $PSVersionTable.PSVersion.ToString()
