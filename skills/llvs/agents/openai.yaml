@@ -1,0 +1,4 @@
+interface:
+  display_name: "Loop Local Visual Studio"
+  short_description: "Run local visual engineering and collect failures"
+  default_prompt: "Use $llvs to build, verify, restore, or diagnose a project visual workflow."
