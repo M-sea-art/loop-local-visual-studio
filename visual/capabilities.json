@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "releaseStage": "public-preview",
+  "implemented": [
+    {
+      "name": "doctor",
+      "entrypoint": "visual.ps1 doctor",
+      "description": "Validate the public LLVS core, registry and optional local dependencies."
+    },
+    {
+      "name": "capabilities",
+      "entrypoint": "visual.ps1 capabilities",
+      "description": "Return the machine-readable implemented and planned capability set."
+    },
+    {
+      "name": "feedback.local",
+      "entrypoint": "skills/llvs/scripts/submit-feedback.ps1",
+      "description": "Write a redacted local JSON feedback record without external publication."
+    },
+    {
+      "name": "feedback.github",
+      "entrypoint": "skills/llvs/scripts/submit-feedback.ps1 -Publish",
+      "description": "Publish allowlisted metadata only after explicit authorization; public repositories require -AllowPublic."
+    }
+  ],
+  "planned": [
+    "register",
+    "build",
+    "export",
+    "capture",
+    "compare",
+    "test",
+    "report",
+    "restore",
+    "degraded",
+    "gate",
+    "openpencil-adapter",
+    "storybook-adapter",
+    "playwright-four-viewport-evidence",
+    "godot-control-adapter"
+  ]
+}
