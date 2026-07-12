@@ -40,13 +40,13 @@ Describe 'LLVS feedback redaction' {
         $payload = New-LLVSPublicFeedbackPayload `
             -FeedbackId 'LLVS-FEEDBACK-0123456789abcdef0123456789abcdef' `
             -SourceProject 'C:\Users\Alice\private-client\game' `
-            -Command 'doctor --verbose' `
+            -Command 'doctor --verbose --token=do-not-publish' `
             -ErrorCode 'registry invalid'
         $json = $payload | ConvertTo-Json -Depth 4
 
-        $json | Should -Not -Match 'Alice|private-client|Summary|Detail'
+        $json | Should -Not -Match 'Alice|private-client|Summary|Detail|do-not-publish'
         $payload.projectRef | Should -Match '^project-[a-f0-9]{12}$'
-        $payload.command | Should -Be 'doctor-verbose'
+        $payload.command | Should -Be 'doctor'
         $payload.errorCode | Should -Be 'REGISTRY-INVALID'
     }
 }
