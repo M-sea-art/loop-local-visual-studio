@@ -10,6 +10,7 @@ Copy `skills/llvs` to `$CODEX_HOME/skills/llvs`, then configure the local LLVS c
 
 ```powershell
 git config --global llvs.home "C:\path\to\your\llvs-checkout"
+git config --global llvs.feedbackRepo "M-sea-art/loop-local-visual-studio"
 ```
 
 Invoke it with:
@@ -20,7 +21,7 @@ $llvs run visual restore for this project
 
 ## Maintenance feedback
 
-When an LLVS workflow fails in another Codex project, the skill writes a sanitized JSON record to `visual/feedback/inbox/` in the configured LLVS checkout. It does not automatically publish private logs, create commits, push, or open GitHub issues.
+When an LLVS workflow fails in another Codex project, the skill writes a sanitized JSON record to `visual/feedback/inbox/` in the configured LLVS checkout. When `llvs.feedbackRepo` is configured and GitHub CLI is authenticated, it also opens a sanitized GitHub issue. Use `-LocalOnly` when a failure may contain sensitive project context.
 
 ## Open-source boundary
 

@@ -35,7 +35,7 @@ When an LLVS command or compatibility path fails:
 3. Report the created feedback JSON path.
 4. Continue locally when a safe workaround exists; do not silently weaken gates.
 
-The feedback script writes only to `<LLVS_HOME>/visual/feedback/inbox/`. It redacts common secrets and does not commit, push, publish, or open a GitHub issue automatically.
+The feedback script always writes to `<LLVS_HOME>/visual/feedback/inbox/` and redacts common secrets. When `git config --global llvs.feedbackRepo` is set and GitHub CLI is authenticated, it also creates a sanitized issue in that repository. Use `-LocalOnly` for sensitive or preflight-only failures.
 
 ## Public/open-source boundary
 
