@@ -1,6 +1,6 @@
 ---
 name: llvs
-description: Run and maintain Loop Local Visual Studio workflows in any Codex project. Use when a project needs local-first visual design build, four-viewport export, Storybook/Playwright QA, visual comparison, recovery without Figma, product registration, or when an LLVS command fails and the failure should be reported back to the central LLVS repository.
+description: Diagnose and maintain the public-preview Loop Local Visual Studio core in Codex projects. Use when a project needs LLVS installation checks, machine-readable capability discovery, local privacy-safe failure feedback, or explicitly authorized allowlisted GitHub feedback. Check capabilities before acting; build, capture, compare, restore, gate, OpenPencil, Storybook, Playwright and Godot adapters remain unavailable until the runtime reports them as implemented.
 ---
 
 # LLVS
@@ -13,33 +13,30 @@ Resolve the central repository in this order:
 
 1. `LLVS_HOME` environment variable.
 2. `git config --global llvs.home`.
-3. Current repository when `visual.ps1` and `visual/products/registry.json` exist.
+3. Current repository only when both `visual.ps1` and `visual/products/registry.json` exist.
 
 Stop with `LLVS_HOME_NOT_CONFIGURED` if none resolves. Never guess another user's path.
 
-## Workflow
+## Diagnose before acting
 
 1. Read the consuming project's `AGENTS.md` and visual specifications.
-2. Run `<LLVS_HOME>/visual.ps1 doctor`.
-3. Register project-specific sources without copying their aesthetic rules into LLVS core.
-4. Run the needed command: `build`, `export`, `capture`, `compare`, `test`, `report`, `restore`, `degraded`, or `gate`.
-5. Treat `NEEDS_REVIEW` and missing owner approval as deliberate human gates.
-6. Never modify original Figma files, global third-party packages, credentials, or owner decisions.
+2. Run `pwsh -File <LLVS_HOME>/visual.ps1 doctor -Json`.
+3. Stop and report required failed checks when status is `NEEDS_FIX`.
+4. Run `pwsh -File <LLVS_HOME>/visual.ps1 capabilities -Json`.
+5. Invoke only capabilities listed under `implemented`.
+6. Report `LLVS_CAPABILITY_NOT_IMPLEMENTED` for planned or unknown capabilities. Never simulate a successful build, capture, comparison, restore or gate.
 
-## Failure feedback
+## Record failure feedback
 
-When an LLVS command or compatibility path fails:
+Run `<SKILL_ROOT>/scripts/submit-feedback.ps1` with source project, command, summary, detail and a stable error code. The default action writes only a local redacted record under `<LLVS_HOME>/visual/feedback/inbox/`.
 
-1. Reproduce once with the smallest relevant command.
-2. Run `scripts/submit-feedback.ps1` with the source project, command, summary and sanitized detail.
-3. Report the created feedback JSON path.
-4. Continue locally when a safe workaround exists; do not silently weaken gates.
+Never publish merely because `llvs.feedbackRepo` is configured. Use `-Publish` only when the user explicitly asks to send feedback externally. Before targeting a public repository, show that only `publicPreview` fields will be sent and require explicit authorization to add `-AllowPublic`.
 
-The feedback script always writes to `<LLVS_HOME>/visual/feedback/inbox/` and redacts common secrets. When `git config --global llvs.feedbackRepo` is set and GitHub CLI is authenticated, it also creates a sanitized issue in that repository. Use `-LocalOnly` for sensitive or preflight-only failures.
+If publishing is requested and fails, preserve the local record, report `publishErrorCode`, and do not present the operation as successful.
 
 ## Public/open-source boundary
 
 - Treat LLVS core code and generic fixtures separately from consuming-project assets.
-- Do not copy private screenshots, fonts, Figma files, customer data or unverified third-party images into the central/public repository.
-- Record only minimal reproduction metadata in feedback.
+- Keep raw paths, summaries, detail, command output, screenshots, fonts, Figma files, customer data and unverified artwork local.
+- Publish only fields allowed by `visual/schemas/public-feedback.schema.json`.
 - Keep product aesthetics and asset licenses in the consuming project.
