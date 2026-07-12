@@ -21,7 +21,7 @@ Describe 'LLVS feedback redaction' {
         )
 
         foreach ($case in $cases) {
-            (Protect-LLVSFeedbackText -Value $case.Value) | Should -Not -Match ([regex]::Escape($case.Forbidden))
+            (ConvertTo-LLVSRedactedText -Value $case.Value) | Should -Not -Match ([regex]::Escape($case.Forbidden))
         }
     }
 
@@ -29,10 +29,10 @@ Describe 'LLVS feedback redaction' {
         $root = Join-Path $TestDrive 'llvs-root'
         New-Item -ItemType Directory -Path $root | Out-Null
         $withTrailingSeparator = $root + [IO.Path]::DirectorySeparatorChar
-        $normalized = Normalize-LLVSHome -Path $withTrailingSeparator
+        $normalized = Resolve-LLVSHomePath -Path $withTrailingSeparator
         $candidate = Join-Path $normalized 'visual/feedback/inbox'
 
-        $normalized | Should -Be (Normalize-LLVSHome -Path $root)
+        $normalized | Should -Be (Resolve-LLVSHomePath -Path $root)
         (Test-LLVSChildPath -Root $withTrailingSeparator -Candidate $candidate) | Should -BeTrue
     }
 
