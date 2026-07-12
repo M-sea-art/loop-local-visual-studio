@@ -7,7 +7,7 @@ function Get-LLVSPlatformName {
     return 'unknown'
 }
 
-function Normalize-LLVSHome {
+function Resolve-LLVSHomePath {
     param([Parameter(Mandatory = $true)][string]$Path)
 
     if ([string]::IsNullOrWhiteSpace($Path)) { throw 'LLVS_HOME_NOT_CONFIGURED' }
@@ -26,7 +26,7 @@ function Test-LLVSChildPath {
         [Parameter(Mandatory = $true)][string]$Candidate
     )
 
-    $normalizedRoot = Normalize-LLVSHome -Path $Root
+    $normalizedRoot = Resolve-LLVSHomePath -Path $Root
     $normalizedCandidate = [IO.Path]::GetFullPath($Candidate)
     $separator = [IO.Path]::DirectorySeparatorChar
     $rootPrefix = if ($normalizedRoot.EndsWith([string]$separator)) { $normalizedRoot } else { $normalizedRoot + $separator }
@@ -38,7 +38,7 @@ function Test-LLVSChildPath {
     return $normalizedCandidate.StartsWith($rootPrefix, $comparison)
 }
 
-function Protect-LLVSFeedbackText {
+function ConvertTo-LLVSRedactedText {
     param([AllowNull()][AllowEmptyString()][string]$Value)
 
     if ($null -eq $Value) { return '' }
@@ -79,6 +79,7 @@ function ConvertTo-LLVSSafeIdentifier {
     )
 
     $safe = [regex]::Replace($Value, '[^A-Za-z0-9_.-]+', '-')
+    $safe = [regex]::Replace($safe, '[-._]{2,}', '-')
     $safe = $safe.Trim([char[]]@('-', '.', '_'))
     if ([string]::IsNullOrWhiteSpace($safe)) { $safe = $Fallback }
     if ($safe.Length -gt $MaximumLength) { $safe = $safe.Substring(0, $MaximumLength) }
@@ -144,9 +145,9 @@ function Write-LLVSJsonFileNoClobber {
 
 Export-ModuleMember -Function @(
     'Get-LLVSPlatformName',
-    'Normalize-LLVSHome',
+    'Resolve-LLVSHomePath',
     'Test-LLVSChildPath',
-    'Protect-LLVSFeedbackText',
+    'ConvertTo-LLVSRedactedText',
     'Get-LLVSProjectReference',
     'ConvertTo-LLVSSafeIdentifier',
     'New-LLVSPublicFeedbackPayload',

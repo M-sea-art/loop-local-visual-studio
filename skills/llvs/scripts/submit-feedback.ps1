@@ -35,7 +35,7 @@ if (-not $llvsHome) {
 }
 if (-not $llvsHome) { throw 'LLVS_HOME_NOT_CONFIGURED' }
 
-$llvsHome = Normalize-LLVSHome -Path $llvsHome
+$llvsHome = Resolve-LLVSHomePath -Path $llvsHome
 $inbox = [IO.Path]::GetFullPath((Join-Path $llvsHome 'visual/feedback/inbox'))
 if (-not (Test-LLVSChildPath -Root $llvsHome -Candidate $inbox)) { throw 'LLVS_FEEDBACK_PATH_INVALID' }
 New-Item -ItemType Directory -Force -Path $inbox | Out-Null
@@ -45,10 +45,10 @@ $record = [ordered]@{
     schemaVersion = 1
     id = $feedbackId
     createdAt = (Get-Date).ToUniversalTime().ToString('o')
-    sourceProject = Protect-LLVSFeedbackText -Value $SourceProject
-    command = Protect-LLVSFeedbackText -Value $Command
-    summary = Protect-LLVSFeedbackText -Value $Summary
-    detail = Protect-LLVSFeedbackText -Value $Detail
+    sourceProject = ConvertTo-LLVSRedactedText -Value $SourceProject
+    command = ConvertTo-LLVSRedactedText -Value $Command
+    summary = ConvertTo-LLVSRedactedText -Value $Summary
+    detail = ConvertTo-LLVSRedactedText -Value $Detail
     errorCode = ConvertTo-LLVSSafeIdentifier -Value $ErrorCode -Fallback 'UNSPECIFIED_FAILURE' -MaximumLength 64 -Uppercase
     status = 'NEW'
 }
