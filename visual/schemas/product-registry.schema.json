@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/M-sea-art/loop-local-visual-studio/visual/schemas/product-registry.schema.json",
+  "title": "LLVS product registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "products"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": 1 },
+    "products": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "root"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,62}$" },
+          "root": { "type": "string", "minLength": 1 },
+          "visualSpec": { "type": "string" },
+          "status": { "enum": ["active", "paused", "archived"] }
+        }
+      }
+    }
+  }
+}

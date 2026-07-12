@@ -1,0 +1,12 @@
+{
+  "$schema": "../schemas/product-registry.schema.json",
+  "schemaVersion": 1,
+  "products": [
+    {
+      "id": "minimal-product",
+      "root": "visual/fixtures/minimal-product",
+      "visualSpec": "visual/fixtures/minimal-product/visual.spec.json",
+      "status": "active"
+    }
+  ]
+}
