@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/M-sea-art/loop-local-visual-studio/visual/schemas/public-feedback.schema.json",
+  "title": "LLVS public feedback allowlist",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "feedbackId", "projectRef", "command", "errorCode", "platform", "powershellVersion"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "feedbackId": { "type": "string", "pattern": "^LLVS-FEEDBACK-[a-f0-9]{32}$" },
+    "projectRef": { "type": "string", "pattern": "^project-[a-f0-9]{12}$" },
+    "command": { "type": "string", "pattern": "^[a-z0-9_.-]{1,48}$" },
+    "errorCode": { "type": "string", "pattern": "^[A-Z0-9_.-]{1,64}$" },
+    "platform": { "enum": ["windows", "macos", "linux", "unknown"] },
+    "powershellVersion": { "type": "string", "pattern": "^[0-9]+(?:\\.[0-9]+){1,3}$" }
+  }
+}

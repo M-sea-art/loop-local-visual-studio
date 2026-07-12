@@ -1,0 +1,47 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: windows-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate skill and JSON contracts
+        run: python scripts/validate-skill.py skills/llvs
+
+      - name: Install PowerShell test tools
+        shell: pwsh
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module Pester -MinimumVersion 5.5.0 -Scope CurrentUser -Force
+          Install-Module PSScriptAnalyzer -MinimumVersion 1.22.0 -Scope CurrentUser -Force
+
+      - name: Analyze PowerShell
+        shell: pwsh
+        run: |
+          $findings = Invoke-ScriptAnalyzer -Path . -Recurse -Severity Error
+          $findings | Format-Table -AutoSize
+          if ($findings) { throw "PSScriptAnalyzer found errors" }
+
+      - name: Run tests
+        shell: pwsh
+        run: Invoke-Pester -Path tests -CI
+
+      - name: Smoke test public core
+        shell: pwsh
+        run: |
+          $doctor = pwsh -File ./visual.ps1 doctor -Json | ConvertFrom-Json
+          if ($doctor.status -ne 'READY_CORE') { throw "LLVS doctor failed" }
