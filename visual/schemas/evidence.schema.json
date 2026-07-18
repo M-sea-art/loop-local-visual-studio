@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "llvs/evidence.schema.json",
+  "title": "LLVS Visual Evidence",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "projectId",
+    "verificationStatus",
+    "createdAt"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "projectId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "viewport": {
+      "type": "object",
+      "properties": {
+        "width": {"type": "integer"},
+        "height": {"type": "integer"},
+        "device": {"type": "string"}
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "properties": {
+        "url": {"type": "string"},
+        "environment": {"type": "string"}
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "properties": {
+        "screenshot": {"type": "string"},
+        "domSnapshot": {"type": "string"}
+      }
+    },
+    "interaction": {
+      "type": "object"
+    },
+    "issues": {
+      "type": "array"
+    },
+    "verificationStatus": {
+      "enum": ["pending", "passed", "blocked"]
+    },
+    "createdAt": {
+      "type": "string"
+    }
+  }
+}
