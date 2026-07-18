@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "projectId": "example-project",
+  "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+  },
+  "runtime": {
+    "url": "http://localhost:3000"
+  },
+  "artifacts": {
+    "screenshot": "artifacts/example.png",
+    "domSnapshot": "artifacts/example.html"
+  },
+  "interaction": {
+    "status": "passed",
+    "checks": ["navigation"]
+  },
+  "issues": [],
+  "verificationStatus": "passed",
+  "createdAt": "2026-07-18T00:00:00Z"
+}
