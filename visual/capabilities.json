@@ -21,6 +21,11 @@
       "name": "feedback.github",
       "entrypoint": "skills/llvs/scripts/submit-feedback.ps1 -Publish",
       "description": "Publish allowlisted metadata only after explicit authorization; public repositories require -AllowPublic."
+    },
+    {
+      "name": "design-evidence.readonly",
+      "entrypoint": "visual/scripts/design-inspect.ps1 and related design-* entrypoints",
+      "description": "Deterministic read-only inspection, snapshots, diffs, impact analysis, catalogs and retention evidence gates for registered local design documents."
     }
   ],
   "planned": [

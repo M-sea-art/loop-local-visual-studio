@@ -16,8 +16,15 @@ Describe 'LLVS public core' {
 
         $implemented | Should -Contain 'doctor'
         $implemented | Should -Contain 'feedback.local'
+        $implemented | Should -Contain 'design-evidence.readonly'
         $result.planned | Should -Contain 'capture'
         @($result.planned | Where-Object { $implemented -contains $_ }).Count | Should -Be 0
+    }
+
+    It 'ships the deterministic design evidence contract' {
+        Test-Path -LiteralPath (Join-Path $repoRoot 'visual/scripts/agent-design.mjs') | Should -BeTrue
+        Test-Path -LiteralPath (Join-Path $repoRoot 'visual/scripts/agent-design-cli.mjs') | Should -BeTrue
+        Test-Path -LiteralPath (Join-Path $repoRoot 'visual/tests/agent-design.test.mjs') | Should -BeTrue
     }
 
     It 'keeps a versioned synthetic public product fixture' {

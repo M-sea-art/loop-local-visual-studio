@@ -13,6 +13,18 @@ LLVS is an experimental, local-first visual engineering workflow for Codex and o
 
 It is **not** a finished Figma replacement or a mature one-click UI generator. The repository currently exposes an early core workflow: before an agent claims that an interface is complete, it should discover available local tools, inspect the real result, collect evidence, report failures and degrade honestly when a capability is unavailable.
 
+## Deterministic design evidence core
+
+The public preview includes a dependency-free Node.js evidence engine for registered local design documents. It provides deterministic inspection, semantic snapshots, diffs, component impact reports, snapshot catalogs, retention decisions, evidence verification, and fail-closed gates. PowerShell entrypoints live under `visual/scripts/design-*.ps1`; request-based commands read the project-relative JSON path from `LLVS_REQUEST`.
+
+Run its pure-function and filesystem-boundary contract with:
+
+```powershell
+node --test visual/tests/agent-design.test.mjs
+```
+
+The engine does not publish, write back to Figma, approve a visual baseline, or grant release authority. Mutation evaluation remains fail-closed unless the local capability contract explicitly enables a supported round trip.
+
 ## Why this experiment exists / 为什么做这个实验
 
 AI 编程 Agent 已经可以很快写出页面，但“代码能运行”并不代表“产品可以交付”。

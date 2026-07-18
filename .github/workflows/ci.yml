@@ -19,6 +19,10 @@ jobs:
         with:
           python-version: "3.12"
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
       - name: Validate skill and JSON contracts
         run: python scripts/validate-skill.py skills/llvs
 
@@ -39,6 +43,10 @@ jobs:
       - name: Run tests
         shell: pwsh
         run: Invoke-Pester -Path tests -CI
+
+      - name: Run deterministic design evidence tests
+        shell: pwsh
+        run: node --test visual/tests/agent-design.test.mjs
 
       - name: Smoke test public core
         shell: pwsh
