@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "name": "LLVS Evidence Producer Contract",
+  "producer": {
+    "id": "example-producer",
+    "type": "unknown"
+  },
+  "input": {
+    "project": "required",
+    "runtime": "optional",
+    "target": "optional"
+  },
+  "output": {
+    "mustProduce": "VisualEvidence",
+    "validation": "required"
+  },
+  "principles": [
+    "producer and validator are separate",
+    "unsupported capabilities must fail honestly",
+    "evidence is required before confidence"
+  ]
+}
