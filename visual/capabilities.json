@@ -26,6 +26,11 @@
       "name": "design-evidence.readonly",
       "entrypoint": "visual/scripts/design-inspect.ps1 and related design-* entrypoints",
       "description": "Deterministic read-only inspection, snapshots, diffs, impact analysis, catalogs and retention evidence gates for registered local design documents."
+    },
+    {
+      "name": "evidence.contract",
+      "entrypoint": "visual/schemas/evidence.schema.json",
+      "description": "Stable visual evidence object contract for future capture, comparison and quality gate workflows."
     }
   ],
   "planned": [
